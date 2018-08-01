@@ -1,6 +1,4 @@
-package com.playtika.jira;
-
-import java.util.Map;
+package com.kolonitsky.api.jira;
 
 /**
  * Created by akalanitski on 29.06.2018.

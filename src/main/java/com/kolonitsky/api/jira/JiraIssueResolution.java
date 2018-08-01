@@ -1,4 +1,4 @@
-package com.playtika.jira;
+package com.kolonitsky.api.jira;
 
 /**
  * Created by akalanitski on 02.07.2018.

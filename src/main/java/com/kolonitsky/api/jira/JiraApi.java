@@ -1,10 +1,7 @@
-package com.playtika.jira;
+package com.kolonitsky.api.jira;
 
-import com.google.gson.GsonBuilder;
 import com.playtika.atlassian.AtlassianApi;
 import com.playtika.kolonitsky.KString;
-import com.playtika.kolonitsky.kttp.KTTP;
-import com.playtika.stash.StashPullRequest;
 
 /**
  * Created by akalanitski on 29.06.2018.

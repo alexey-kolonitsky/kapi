@@ -1,4 +1,4 @@
-package com.playtika.jira;
+package com.kolonitsky.api.jira;
 
 import java.util.Map;
 
