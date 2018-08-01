@@ -1,6 +1,6 @@
 package com.kolonitsky.api.jira;
 
-import com.playtika.atlassian.AtlassianApi;
+import com.kolonitsky.api.atlassian.AtlassianApi;
 import com.playtika.kolonitsky.KString;
 
 /**

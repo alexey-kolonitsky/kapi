@@ -1,12 +1,9 @@
-package com.playtika.atlassian;
+package com.kolonitsky.api.atlassian;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.playtika.kolonitsky.KString;
 import com.playtika.kolonitsky.kttp.KTTP;
-import com.playtika.kolonitsky.kttp.KTTPRequest;
-import com.playtika.stash.StashPullRequest;
-import org.apache.commons.lang3.text.StrSubstitutor;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.playtika.artifactory;
+package com.kolonitsky.api.artifactory;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
