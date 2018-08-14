@@ -49,7 +49,13 @@ public class StashApi extends AtlassianApi {
 
 	public StashTask addTaskToComment(int anchorId, String text) {
 		String postData = "{\"anchor\": {\"id\": " + anchorId + ",\"type\": \"COMMENT\"},\"text\": \"" + text + "\"}";
-		return post(StashApiUrl.PULL_REQUEST_TASKS, postData, StashTask.class);
+		return post(StashApiUrl.TASKS, postData, StashTask.class);
+	}
+
+	public StashTask[] getPullRequestTasks(String pullRequestId) {
+		String url = KString.replaceProp(StashApiUrl.PULL_REQUEST_TASKS, "pullRequestId", pullRequestId);
+		StashPullRequestTasks tasks = get(url, StashPullRequestTasks.class);
+		return tasks.values;
 	}
 
 	public StashCommits getChanges(String pullRequestId) {

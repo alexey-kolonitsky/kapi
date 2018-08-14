@@ -6,4 +6,6 @@ package com.kolonitsky.api.stash;
 public class StashTask {
 	public int id;
 	public String text;
+	public String state;
+	public StashUser author;
 }
