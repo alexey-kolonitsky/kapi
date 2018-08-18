@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.playtika.kolonitsky.KString;
 import com.playtika.kolonitsky.kttp.KTTP;
+import com.playtika.kolonitsky.kttp.KTTPRequest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,9 @@ public class AtlassianApi {
 	public <T> T get(String url, Class<T> classOfT) {
 		T result = null;
 		url = protocol + host + url;
-		String responseData = KTTP.get(KString.replaceMap(url, urlParameters));
+		url = KString.replaceMap(url, urlParameters);
+		KTTPRequest request = KTTP.get(url);
+		String responseData = request.response.data;
 		if (responseData != null) {
 			result = gson.fromJson(responseData, classOfT);
 		}
@@ -42,7 +45,8 @@ public class AtlassianApi {
 	public <T> T post(String url, String requestData, Class<T> classOfT) {
 		T result = null;
 		url = protocol + host + url;
-		String responseData = KTTP.post(KString.replaceMap(url, urlParameters), requestData);
+		KTTPRequest request = KTTP.post(KString.replaceMap(url, urlParameters), requestData);
+		String responseData = request.response.data;
 		if (responseData != null && classOfT != null) {
 			result = gson.fromJson(responseData, classOfT);
 		}

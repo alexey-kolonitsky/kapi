@@ -33,7 +33,7 @@ public class StashApi extends AtlassianApi {
 	public StashPullRequest[] getPullRequests(String status) throws Exception {
 		String url = KString.replaceProp(StashApiUrl.PULL_REQUESTS, "state", status);
 		StashPullRequests result = get(url, StashPullRequests.class);
-		return result.values;
+		return result != null ? result.values : null;
 	}
 
 	public void approvePullRequest(String pullRequestId) {
@@ -55,7 +55,7 @@ public class StashApi extends AtlassianApi {
 	public StashTask[] getPullRequestTasks(String pullRequestId) {
 		String url = KString.replaceProp(StashApiUrl.PULL_REQUEST_TASKS, "pullRequestId", pullRequestId);
 		StashPullRequestTasks tasks = get(url, StashPullRequestTasks.class);
-		return tasks.values;
+		return tasks != null ? tasks.values : null;
 	}
 
 	public StashCommits getChanges(String pullRequestId) {
