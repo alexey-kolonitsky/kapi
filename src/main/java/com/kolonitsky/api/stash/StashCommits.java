@@ -7,4 +7,5 @@ public class StashCommits {
 	public int size;
 	public int limit;
 	public boolean isLastPage;
+	public StashCommit[] values;
 }
