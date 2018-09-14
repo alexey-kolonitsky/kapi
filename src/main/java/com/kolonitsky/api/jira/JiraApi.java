@@ -1,13 +1,13 @@
 package com.kolonitsky.api.jira;
 
 import com.kolonitsky.api.atlassian.AtlassianApi;
-import com.playtika.kolonitsky.KString;
+import com.kolonitsky.utils.KString;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by akalanitski on 29.06.2018.
+ * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
 public class JiraApi extends AtlassianApi {
 

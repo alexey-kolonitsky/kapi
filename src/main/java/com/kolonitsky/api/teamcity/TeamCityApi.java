@@ -1,4 +1,4 @@
-package com.kolonitsky.api.artifactory;
+package com.kolonitsky.api.teamcity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,13 +15,13 @@ import java.util.zip.ZipInputStream;
 /**
  * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
-public class Artifactory {
-	public static final String ERROR_CONNECTION_LOST = "ERROR: Artifactory unavailable. Recheck connection with artifactory servert and retry.";
+public class TeamCityApi {
+	public static final String ERROR_CONNECTION_LOST = "ERROR: TeamCity unavailable. Recheck connection with artifactory servert and retry.";
 
 	private String _host;
 	private String _path;
 
-	public Artifactory(String host, String path) {
+	public TeamCityApi(String host, String path) {
 		_host = host;
 		_path = path;
 	}

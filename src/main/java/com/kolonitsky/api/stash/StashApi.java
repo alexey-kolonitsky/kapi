@@ -1,10 +1,10 @@
 package com.kolonitsky.api.stash;
 
 import com.kolonitsky.api.atlassian.AtlassianApi;
-import com.playtika.kolonitsky.KString;
+import com.kolonitsky.utils.KString;
 
 /**
- * Created by akalanitski on 02.04.2018.
+ * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
 public class StashApi extends AtlassianApi {
 

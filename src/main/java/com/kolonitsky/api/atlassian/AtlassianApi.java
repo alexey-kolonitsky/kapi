@@ -2,15 +2,15 @@ package com.kolonitsky.api.atlassian;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.playtika.kolonitsky.KString;
-import com.playtika.kolonitsky.kttp.KTTP;
-import com.playtika.kolonitsky.kttp.KTTPRequest;
+import com.kolonitsky.utils.KString;
+import com.kolonitsky.kttp.KTTP;
+import com.kolonitsky.kttp.KTTPRequest;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by akalanitski on 29.06.2018.
+ * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
 public class AtlassianApi {
 

@@ -1,7 +1,7 @@
 package com.kolonitsky.api.stash;
 
 /**
- * Created by akalanitski on 07.06.2018.
+ * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
 public class StashProperties {
 	public int resolvedTaskCount;

@@ -1,7 +1,7 @@
 package com.kolonitsky.api.stash;
 
 /**
- * Created by akalanitski on 23.05.2018.
+ * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
 public class StashComment {
 	public int id;

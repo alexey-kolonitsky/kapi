@@ -3,7 +3,7 @@ package com.kolonitsky.api.jira;
 import java.util.Map;
 
 /**
- * Created by akalanitski on 29.06.2018.
+ * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
 public class JiraUser {
 	public String self;
