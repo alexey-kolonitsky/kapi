@@ -1,4 +1,4 @@
-package com.kolonitsky.api.testrail;
+package com.kolonitsky.api.testrail.dto;
 
 /**
  * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;

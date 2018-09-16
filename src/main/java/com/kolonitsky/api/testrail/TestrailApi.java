@@ -1,6 +1,7 @@
 package com.kolonitsky.api.testrail;
 
 import com.kolonitsky.api.atlassian.AtlassianApi;
+import com.kolonitsky.api.testrail.dto.TestrailCases;
 import com.kolonitsky.utils.KString;
 
 /**
