@@ -1,5 +1,7 @@
 package com.kolonitsky.api.artifactory;
 
+import com.kolonitsky.kttp.KTTP;
+import com.kolonitsky.utils.KString;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -15,19 +17,20 @@ import java.util.zip.ZipInputStream;
 /**
  * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
-public class Artifactory {
+public class ArtifactoryApi {
 	public static final String ERROR_CONNECTION_LOST = "ERROR: Artifactory unavailable. Recheck connection with artifactory servert and retry.";
 
 	private String _host;
 	private String _path;
 
-	public Artifactory(String host, String path) {
+	public ArtifactoryApi(String host, String path) {
 		_host = host;
 		_path = path;
 	}
 
 	public ArrayList<String> search(String name) {
-		String url = _host + "/" + _path + "/" + "//api/search/artifact?name=" + name;
+		String url = KString.replaceProp(ArtifactoryApiUrl.SEARCH, "path", _path);
+		url = KString.replaceProp(url, "name", name);
 		try {
 			JSONObject jsonResponse = loadRemoteJSON(url);
 			return parseSearchResult(jsonResponse);
@@ -56,50 +59,11 @@ public class Artifactory {
 		if (results.size() > 0) {
 			JSONObject jsonArtifactInfo = loadRemoteJSON(results.get(0));
 			String downloadURI = jsonArtifactInfo.getString("downloadUri");
-			try {
-				URL url = new URL(downloadURI);
-				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-				connection.setRequestMethod("GET");
-				unpackStreamTo(connection.getInputStream(), destinationPath);
-			}
-			catch (IOException exception) {
-				return false;
-			}
+			KTTP.download(downloadURI, destinationPath);
 		} else {
 			System.out.println("ERROR: Artifact " + artifactId + " not available in repository");
 		}
 		return false;
-	}
-
-	private void unpackStreamTo(InputStream inputStream, String dest) {
-		try {
-			BufferedInputStream buf = new BufferedInputStream(inputStream);
-			buf.mark(Integer.MAX_VALUE);
-			byte[] buffer = new byte[1024];
-			buf.reset();
-			ZipInputStream zis = new ZipInputStream(buf);
-			ZipEntry zipEntry = zis.getNextEntry();
-			while(zipEntry != null) {
-				String fileName = zipEntry.getName();
-				File newFile = new File(dest + File.separator + fileName);
-//                System.out.println("Unzipping to "+newFile.getAbsolutePath());
-				new File(newFile.getParent()).mkdirs();
-				FileOutputStream fos = new FileOutputStream(newFile);
-				int len;
-				while ((len = zis.read(buffer)) > 0) {
-					fos.write(buffer, 0, len);
-				}
-				fos.close();
-				//close this ZipEntry
-				zis.closeEntry();
-				zipEntry = zis.getNextEntry();
-			}
-			zis.closeEntry();
-			zis.close();
-			buf.close();
-		} catch (IOException exception) {
-			System.out.println(exception);
-		}
 	}
 
 	private static JSONObject loadRemoteJSON(String urlString) throws IOException {

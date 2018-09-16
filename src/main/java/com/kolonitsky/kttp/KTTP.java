@@ -1,8 +1,12 @@
 package com.kolonitsky.kttp;
 
-import java.io.DataOutputStream;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 /**
  * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
@@ -11,7 +15,7 @@ public class KTTP {
 
 	public static String USER_AGENT = "KHTTP";
 	public static String CONTENT_TYPE_JSON = "application/json";
-	public static String AUTHORIZATION = "YWthbGFuaXRza2k6TmFuYVRoZUJlc3QyMQ==";
+	public static String AUTHORIZATION = "YWthbGFuaXRza2k6ZTdHMWpmclFSSQ==";
 
 	public static boolean echo = false;
 
@@ -56,6 +60,18 @@ public class KTTP {
 		request.headers.put("Pragma", "no-cache");
 		request.connect();
 		request.handleResponse();
+		return request;
+	}
+
+	public static KTTPRequest download(String url, String path) {
+		KTTPRequest request = new KTTPRequest();
+		request.url = url;
+		request.method = "GET";
+		request.headers = new HashMap<>();
+		request.headers.put("User-Agent", USER_AGENT);
+		request.headers.put("Authorization", "Basic " + AUTHORIZATION);
+		request.connect();
+		request.unpackStreamTo(path);
 		return request;
 	}
 
