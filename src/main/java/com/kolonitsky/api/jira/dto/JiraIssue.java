@@ -1,4 +1,4 @@
-package com.kolonitsky.api.jira;
+package com.kolonitsky.api.jira.dto;
 
 /**
  * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;

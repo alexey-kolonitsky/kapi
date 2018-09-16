@@ -1,4 +1,4 @@
-package com.kolonitsky.api.jira;
+package com.kolonitsky.api.jira.dto;
 
 import java.util.Map;
 

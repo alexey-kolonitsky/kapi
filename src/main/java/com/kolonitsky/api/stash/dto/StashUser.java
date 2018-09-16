@@ -1,4 +1,4 @@
-package com.kolonitsky.api.stash;
+package com.kolonitsky.api.stash.dto;
 
 /**
  * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;

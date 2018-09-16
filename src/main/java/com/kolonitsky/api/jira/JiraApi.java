@@ -1,6 +1,8 @@
 package com.kolonitsky.api.jira;
 
 import com.kolonitsky.api.atlassian.AtlassianApi;
+import com.kolonitsky.api.jira.dto.JiraIssue;
+import com.kolonitsky.api.jira.dto.JiraIssueType;
 import com.kolonitsky.utils.KString;
 
 import java.util.regex.Matcher;

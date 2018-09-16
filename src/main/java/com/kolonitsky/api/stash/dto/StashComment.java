@@ -1,11 +1,9 @@
-package com.kolonitsky.api.stash;
+package com.kolonitsky.api.stash.dto;
 
 /**
  * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
-public class StashTask {
+public class StashComment {
 	public int id;
 	public String text;
-	public String state;
-	public StashUser author;
 }

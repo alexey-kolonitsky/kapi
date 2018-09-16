@@ -1,6 +1,7 @@
 package com.kolonitsky.api.stash;
 
 import com.kolonitsky.api.atlassian.AtlassianApi;
+import com.kolonitsky.api.stash.dto.*;
 import com.kolonitsky.utils.KString;
 
 /**
