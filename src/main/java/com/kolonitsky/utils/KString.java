@@ -17,7 +17,7 @@ public class KString {
 			return input;
 
 		for (String key : placeholders.keySet()) {
-			String pkey = "{" + key + "}";
+			String pkey = "${" + key + "}";
 			String pvalue = placeholders.get(key);
 			input = input.replace(pkey, pvalue);
 		}
@@ -25,6 +25,6 @@ public class KString {
 		return input;
 	}
 	public static String replaceProp(String input, String propertyKey, String propertyValue) {
-		return input.replace("{" + propertyKey + "}", propertyValue);
+		return input.replace("${" + propertyKey + "}", propertyValue);
 	}
 }

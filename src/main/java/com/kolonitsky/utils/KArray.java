@@ -12,11 +12,11 @@ public class KArray {
 		return false;
 	}
 
-	public static String toString(Object[] items, String separator) {
+	public static String toString(Object[] items, String separator, String quoteValue) {
 		String result = "";
 		for (int i = 0; i < items.length; i++) {
 			if (i != 0) result += separator;
-			result += String.valueOf(items[i]);
+			result += quoteValue + String.valueOf(items[i]) + quoteValue;
 		}
 		return result;
 	}
