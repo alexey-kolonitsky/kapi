@@ -20,6 +20,7 @@ public class KTTPRequest {
 	public String data;
 	public HttpURLConnection connection;
 	public KTTPResponse response;
+	public KTTPHandler handler = null;
 
 	public ArrayList<String> errors = new ArrayList<>();
 
@@ -27,21 +28,19 @@ public class KTTPRequest {
 		return errors != null && errors.size() > 0;
 	}
 
-	public static boolean echo = true;
-
 	public void connect() {
 		URL url = null;
 		try {
 			url = new URL(this.url);
 		} catch (MalformedURLException ex) {
-			errors.add(KTTPError.InvalidUrl(this.url));
+			onError(KTTPError.InvalidUrl(this.url));
 			return;
 		}
 
 		try {
 			connection = (HttpURLConnection) url.openConnection();
 		} catch (IOException ex) {
-			addError(KTTPError.Connection(this.url));
+			onError(KTTPError.Connection(this.url));
 			return;
 		}
 
@@ -49,7 +48,7 @@ public class KTTPRequest {
 		try {
 			connection.setRequestMethod(method);
 		} catch (ProtocolException ex) {
-			addError(KTTPError.Method(method, this.url));
+			onError(KTTPError.Method(method, this.url));
 			return;
 		}
 
@@ -65,8 +64,7 @@ public class KTTPRequest {
 		try {
 			response.code = connection.getResponseCode();
 			if (response.code == 200 || response.code == 201) {
-//				if (echo) Konsole.info(method + ": " + response.code + ": " + url);
-
+				onOutput(method + ": " + response.code + ": " + url);
 				BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 				String inputLine;
 				StringBuffer buffer = new StringBuffer();
@@ -77,10 +75,10 @@ public class KTTPRequest {
 				in.close();
 				response.data = buffer.toString();
 			} else {
-				addError(KTTPError.ResponseCode(response.code, url));
+				onError(KTTPError.ResponseCode(response.code, url));
 			}
 		} catch (IOException ex) {
-			addError(KTTPError.Response(url));
+			onError(KTTPError.Response(url));
 		}
 	}
 
@@ -95,7 +93,7 @@ public class KTTPRequest {
 			while(zipEntry != null) {
 				String fileName = zipEntry.getName();
 				File newFile = new File(path + File.separator + fileName);
-				if (echo) System.out.println("Unzipping to " + newFile.getAbsolutePath());
+				onOutput("Unzipping to " + newFile.getAbsolutePath());
 				if (fileName.charAt(fileName.length() - 1) == '/') {
 					newFile.mkdirs();
 				} else {
@@ -116,12 +114,20 @@ public class KTTPRequest {
 			zis.close();
 			buf.close();
 		} catch (IOException exception) {
-			System.out.println(exception);
+			onError(exception.getMessage());
 		}
 	}
 
-	public void addError(String message) {
+	private void onOutput(String message) {
+		if (handler != null) {
+			handler.kttpOutput(message);
+		}
+	}
+
+	private void onError(String message) {
 		errors.add(message);
-//		if (echo) Konsole.error(message);
+		if (handler != null) {
+			handler.kttpError(message);
+		}
 	}
 }

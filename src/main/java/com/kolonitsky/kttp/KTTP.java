@@ -63,13 +63,14 @@ public class KTTP {
 		return request;
 	}
 
-	public static KTTPRequest download(String url, String path) {
+	public static KTTPRequest download(String url, String path, KTTPHandler handler) {
 		KTTPRequest request = new KTTPRequest();
 		request.url = url;
 		request.method = "GET";
 		request.headers = new HashMap<>();
 		request.headers.put("User-Agent", USER_AGENT);
 		request.headers.put("Authorization", "Basic " + AUTHORIZATION);
+		request.handler = handler;
 		request.connect();
 		request.unpackStreamTo(path);
 		return request;

@@ -57,7 +57,7 @@ public class TeamCityApi {
 		if (results.size() > 0) {
 			JSONObject jsonArtifactInfo = loadRemoteJSON(results.get(0));
 			String downloadURI = jsonArtifactInfo.getString("downloadUri");
-			KTTP.download(downloadURI, destinationPath);
+			KTTP.download(downloadURI, destinationPath, null);
 		} else {
 			System.out.println("ERROR: Artifact " + artifactId + " not available in repository");
 		}
