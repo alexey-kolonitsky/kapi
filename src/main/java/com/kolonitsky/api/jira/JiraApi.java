@@ -31,7 +31,7 @@ public class JiraApi extends AtlassianApi {
 	// ISSUE_KEY
 	//---------------------------------
 
-	public static final String ISSUE_KEY = "\\b[a-z][a-z0-9]+-[0-9]+\\b";
+	public static final String ISSUE_KEY = "[a-z][a-z0-9]+-[0-9]+";
 	public static final Pattern ISSUE_KEY_PATTERN = Pattern.compile(ISSUE_KEY, Pattern.MULTILINE);;
 
 	public static Matcher matchIssueKey(String text) {
