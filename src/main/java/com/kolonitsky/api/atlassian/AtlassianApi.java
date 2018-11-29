@@ -16,7 +16,7 @@ public class AtlassianApi {
 
 	protected Gson gson;
 	protected String protocol = "https://";
-	protected String host = "https://stash.playtika.com";
+	protected String host = "stash.playtika.com";
 	protected Map<String, String> urlParameters;
 
 	public AtlassianApi(String host) {
@@ -31,14 +31,18 @@ public class AtlassianApi {
 
 	public <T> T get(String url, Class<T> classOfT) {
 		T result = null;
-		url = protocol + host + url;
-		url = KString.replaceMap(url, urlParameters);
-		KTTPRequest request = KTTP.get(url);
+		KTTPRequest request = KTTP.get(getURL(url));
 		String responseData = request.response.data;
 		if (responseData != null) {
 			result = gson.fromJson(responseData, classOfT);
 		}
 		return result;
+	}
+
+	public String getURL(String url) {
+		url = protocol + host + url;
+		url = KString.replaceMap(url, urlParameters);
+		return url;
 	}
 
 
