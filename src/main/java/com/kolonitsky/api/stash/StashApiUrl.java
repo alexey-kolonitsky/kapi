@@ -10,6 +10,8 @@ public class StashApiUrl {
 	public static String PULL_REQUESTS = "/rest/api/1.0/projects/${projectKey}/repos/${projectSlug}/pull-requests?state=${state}&limit=1000";
 	public static String PULL_REQUEST_COMMITS = "/rest/api/1.0/projects/${projectKey}/repos/${projectSlug}/pull-requests/${pullRequestId}/commits";
 	public static String PULL_REQUEST_TASKS = "/rest/api/1.0/projects/${projectKey}/repos/${projectSlug}/pull-requests/${pullRequestId}/tasks";
+	///
+	public static String BROWSE_FILE = "/projects/${projectKey}/repos/${projectSlug}/browse/${filePath}";
 	// Comments
 	public static String PULL_REQUEST_COMMENTS = "/rest/api/1.0/projects/${projectKey}/repos/${projectSlug}/pull-requests/${pullRequestId}/comments";
 	// Tasks

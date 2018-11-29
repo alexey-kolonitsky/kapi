@@ -15,6 +15,11 @@ public class StashApi extends AtlassianApi {
 		addUrlParameter("projectSlug", repositroyId);
 	}
 
+	public String getFileLink(String path) {
+		String url = getURL(StashApiUrl.BROWSE_FILE);
+		return KString.replaceProp(url, "filePath", path);
+	}
+
 	/**
 	 *
 	 * @param pullRequestId
