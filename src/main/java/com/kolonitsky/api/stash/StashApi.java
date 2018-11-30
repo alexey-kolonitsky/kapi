@@ -20,6 +20,11 @@ public class StashApi extends AtlassianApi {
 		return KString.replaceProp(url, "filePath", path);
 	}
 
+	public String getCommitLink(String commitId) {
+		String url = getURL(StashApiUrl.BROWSE_COMMIT);
+		return KString.replaceProp(url, "commitId", commitId);
+	}
+
 	/**
 	 *
 	 * @param pullRequestId
