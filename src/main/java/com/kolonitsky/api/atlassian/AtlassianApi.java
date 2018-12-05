@@ -48,8 +48,8 @@ public class AtlassianApi {
 
 	public <T> T post(String url, String requestData, Class<T> classOfT) {
 		T result = null;
-		url = protocol + host + url;
-		KTTPRequest request = KTTP.post(KString.replaceMap(url, urlParameters), requestData);
+		url = KString.replaceMap(getURL(url), urlParameters);
+		KTTPRequest request = KTTP.post(url, requestData);
 		String responseData = request.response.data;
 		if (responseData != null && classOfT != null) {
 			result = gson.fromJson(responseData, classOfT);

@@ -25,6 +25,16 @@ public class StashApi extends AtlassianApi {
 		return KString.replaceProp(url, "commitId", commitId);
 	}
 
+	public String userProfileLink(String username) {
+		String url = getURL(StashApiUrl.USER_PRIFILE);
+		return KString.replaceProp(url, "username", username);
+	}
+
+	public String userProfilePicture(String username) {
+		String url = getURL(StashApiUrl.USER_AVATAR);
+		return KString.replaceProp(url, "username", username);
+	}
+
 	/**
 	 *
 	 * @param pullRequestId
