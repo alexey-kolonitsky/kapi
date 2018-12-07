@@ -19,6 +19,34 @@ public class KTTP {
 
 	public static boolean echo = false;
 
+	public static KTTPRequest put(String url, String data) {
+		KTTPRequest request = new KTTPRequest();
+		request.url = url;
+		request.method = "POST";
+		request.headers = new HashMap<>();
+		request.headers.put("User-Agent", USER_AGENT);
+		request.headers.put("Content-Type", CONTENT_TYPE_JSON);
+		request.headers.put("Authorization", "Basic " + AUTHORIZATION);
+		request.headers.put("Accept", CONTENT_TYPE_JSON);
+		request.headers.put("Pragma", "no-cache");
+		request.connect();
+
+		if (data != null) {
+			byte[] putData = data.getBytes( StandardCharsets.UTF_8 );
+			request.connection.setDoOutput( true );
+			request.connection.setRequestProperty("charset", "utf-8");
+			request.connection.setRequestProperty("Content-Length", Integer.toString(putData.length));
+			request.connection.setUseCaches( false );
+			try(DataOutputStream wr = new DataOutputStream(request.connection.getOutputStream())) {
+				wr.write( putData );
+			} catch (Exception ex) {
+//				Konsole.error("POST ERROR");
+			}
+		}
+		request.handleResponse();
+		return request;
+	}
+
 	public static KTTPRequest post(String url, String data) {
 		KTTPRequest request = new KTTPRequest();
 		request.url = url;

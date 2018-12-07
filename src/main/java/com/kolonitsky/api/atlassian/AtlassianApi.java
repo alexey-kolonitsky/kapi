@@ -6,6 +6,8 @@ import com.kolonitsky.utils.KString;
 import com.kolonitsky.kttp.KTTP;
 import com.kolonitsky.kttp.KTTPRequest;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +41,16 @@ public class AtlassianApi {
 		return result;
 	}
 
+	public <T> T put(String url, String data, Class<T> classOfT) {
+		KTTPRequest request = KTTP.put(url, data);
+		String responseData = request.response.data;
+		T result = null;
+		if (responseData != null && classOfT != null) {
+			result = gson.fromJson(responseData, classOfT);
+		}
+		return result;
+	}
+
 	public String getURL(String url) {
 		url = protocol + host + url;
 		url = KString.replaceMap(url, urlParameters);
@@ -47,10 +59,10 @@ public class AtlassianApi {
 
 
 	public <T> T post(String url, String requestData, Class<T> classOfT) {
-		T result = null;
 		url = KString.replaceMap(getURL(url), urlParameters);
 		KTTPRequest request = KTTP.post(url, requestData);
 		String responseData = request.response.data;
+		T result = null;
 		if (responseData != null && classOfT != null) {
 			result = gson.fromJson(responseData, classOfT);
 		}
