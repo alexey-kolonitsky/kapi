@@ -4,6 +4,8 @@ import com.kolonitsky.api.atlassian.AtlassianApi;
 import com.kolonitsky.api.stash.dto.*;
 import com.kolonitsky.utils.KString;
 
+import java.util.HashMap;
+
 /**
  * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
@@ -35,7 +37,24 @@ public class StashApi extends AtlassianApi {
 		return KString.replaceProp(url, "username", username);
 	}
 
+	public StashPullRequest addPullRequest(String title, String description, String fromBranch, String toBranch) {
+		String url = StashApiUrl.ADD_PULL_REQUEST;
+		HashMap<String, Object> o = new HashMap<>();
+		String repoObject = KString.replaceMap("{'slug': '${projectSlug}', 'name': null, 'project': {'key': '${projectKey}'}}", urlParameters);
+		String requestData = "{" +
+			"'title': '${title}', " +
+			"'description': '${description}'," +
+			"'state': 'OPEN', " +
+			"'open': true, " +
+			"'closed': false, " +
+			"'fromRef': {'id': '${fromBranch}', 'repository': " + repoObject + "," +
+			"'toRef': {'id': '${toBranch}', 'repository':" + repoObject +
+		"}";
+		return post(url, requestData, StashPullRequest.class);
+	}
+
 	/**
+	 * Retrieve pull-request by id
 	 *
 	 * @param pullRequestId
 	 * @return StashPullRequest object if pull-request with id pullRequestId has
@@ -44,6 +63,20 @@ public class StashApi extends AtlassianApi {
 	public StashPullRequest getPullRequest(String pullRequestId) {
 		String url = KString.replaceProp(StashApiUrl.PULL_REQUEST, "pullRequestId", pullRequestId);
 		return get(url, StashPullRequest.class);
+	}
+
+	/**
+	 * Update exists pull-request title and description.
+	 *
+	 * @param pullRequestId
+	 * @param title
+	 * @param details
+	 * @return
+	 */
+	public StashPullRequest updatePullRequest(String pullRequestId, String title, String details) {
+		String url = KString.replaceProp(StashApiUrl.PULL_REQUEST, "pullRequestId", pullRequestId);
+		String requestData = "{\"id\": " + pullRequestId + ", \"version\": 2, \"title\": \"" + title + "\", \"description\": \"" + details + "\"}";
+		return put(url, requestData, StashPullRequest.class);
 	}
 
 	/**
