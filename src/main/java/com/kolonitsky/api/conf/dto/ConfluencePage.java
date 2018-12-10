@@ -9,4 +9,5 @@ public class ConfluencePage {
 	public String status;
 	public String title;
 	public ConfluencePageBody body;
+	public ConfluenceVersion version;
 }

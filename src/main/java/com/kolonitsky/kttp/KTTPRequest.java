@@ -14,6 +14,7 @@ import java.util.zip.ZipInputStream;
  * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
 public class KTTPRequest {
+
 	public String url;
 	public String method;
 	public Map<String, String> headers;
@@ -33,14 +34,14 @@ public class KTTPRequest {
 		try {
 			url = new URL(this.url);
 		} catch (MalformedURLException ex) {
-			onError(KTTPError.InvalidUrl(this.url));
+			addError(KTTPError.InvalidUrl(this.url));
 			return;
 		}
 
 		try {
 			connection = (HttpURLConnection) url.openConnection();
 		} catch (IOException ex) {
-			onError(KTTPError.Connection(this.url));
+			addError(KTTPError.Connection(this.url));
 			return;
 		}
 
@@ -48,7 +49,7 @@ public class KTTPRequest {
 		try {
 			connection.setRequestMethod(method);
 		} catch (ProtocolException ex) {
-			onError(KTTPError.Method(method, this.url));
+			addError(KTTPError.Method(method, this.url));
 			return;
 		}
 
@@ -59,26 +60,30 @@ public class KTTPRequest {
 		}
 	}
 
+	public String getConnectionInput() throws IOException  {
+		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		String inputLine;
+		StringBuffer buffer = new StringBuffer();
+		while ((inputLine = in.readLine()) != null) {
+			buffer.append(inputLine);
+		}
+		in.close();
+		return buffer.toString();
+	}
+
 	public void handleResponse() {
 		response = new KTTPResponse();
 		try {
 			response.code = connection.getResponseCode();
 			if (response.code == 200 || response.code == 201) {
 				onOutput(method + ": " + response.code + ": " + url);
-				BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-				String inputLine;
-				StringBuffer buffer = new StringBuffer();
-
-				while ((inputLine = in.readLine()) != null) {
-					buffer.append(inputLine);
-				}
-				in.close();
-				response.data = buffer.toString();
+				response.data = getConnectionInput();
 			} else {
-				onError(KTTPError.ResponseCode(response.code, url));
+				addError(KTTPError.ResponseCode(response.code, url));
+				response.error = getConnectionInput();
 			}
 		} catch (IOException ex) {
-			onError(KTTPError.Response(url));
+			addError(KTTPError.Response(url));
 		}
 	}
 
@@ -114,7 +119,7 @@ public class KTTPRequest {
 			zis.close();
 			buf.close();
 		} catch (IOException exception) {
-			onError(exception.getMessage());
+			addError(exception.getMessage());
 		}
 	}
 
@@ -124,7 +129,7 @@ public class KTTPRequest {
 		}
 	}
 
-	private void onError(String message) {
+	public void addError(String message) {
 		errors.add(message);
 		if (handler != null) {
 			handler.kttpError(message);

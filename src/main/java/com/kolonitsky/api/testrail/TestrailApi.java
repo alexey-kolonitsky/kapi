@@ -1,13 +1,13 @@
 package com.kolonitsky.api.testrail;
 
-import com.kolonitsky.api.atlassian.AtlassianApi;
+import com.kolonitsky.api.RestApi;
 import com.kolonitsky.api.testrail.dto.TestrailCases;
 import com.kolonitsky.utils.KString;
 
 /**
  * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
-public class TestrailApi extends AtlassianApi {
+public class TestrailApi extends RestApi {
 
 	public TestrailApi(String host) {
 		super(host);

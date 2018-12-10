@@ -1,25 +1,17 @@
 package com.kolonitsky.api.conf;
 
-import com.kolonitsky.api.atlassian.AtlassianApi;
+import com.kolonitsky.api.RestApi;
 import com.kolonitsky.api.conf.dto.ConfluencePage;
 import com.kolonitsky.api.conf.dto.ConfluenceSearchResult;
-import com.kolonitsky.api.jira.JiraApiUrl;
-import com.kolonitsky.kttp.KTTP;
 import com.kolonitsky.utils.KString;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
-import java.util.ArrayList;
 
 /**
  * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
-public class ConfluenceApi extends AtlassianApi {
+public class ConfluenceApi extends RestApi {
 	public static final String ERROR_CONNECTION_LOST = "ERROR: Artifactory unavailable. Recheck connection with artifactory servert and retry.";
 
 	public static String getJiraMacros(String issueKey) {
@@ -59,29 +51,31 @@ public class ConfluenceApi extends AtlassianApi {
 		return null;
 	}
 
-	public void updatePage(String contentId, String content) {
-		String url = KString.replaceProp(ConfluenceApiUrl.CONTENT, "id", contentId);
-		String pageContent = content.replaceAll("\"", "\\\"");
-		pageContent = pageContent.replaceAll("\n" , "");
-		String data = "<content type='page'><version> 'version': {'number': 2}, , 'body': {'storage': {'value': " + pageContent + ", 'representation': 'storage'}}}";
+	public void updatePage(ConfluencePage page, String title, String space, String content) {
+		String url = KString.replaceProp(ConfluenceApiUrl.CONTENT, "id", page.id);
+		String pageContent = encodePageContent(content);
+		String pageVersion = String.valueOf(page.version.number +1);
+		String data = "{\"id\":" + page.id + ",\"type\":\"page\", \"title\":\"" + title + "\",\"space\":{\"key\":\"" + space + "\"},\"body\":{\"storage\":{\"value\":\"" + pageContent + "\",\"representation\":\"storage\"}},\"version\":{\"number\":" + pageVersion + "}}";
+		System.out.println(">>> " + data);
 		put(url, data, null);
 	}
 
 	public void createPage(String space, String title, String ancestorId, String content) {
 		String ancestorObject = (ancestorId == null || ancestorId.isEmpty()) ? "" : " \"ancestors\": [{\"id\": " + ancestorId + "}],";
+		String pageContent = encodePageContent(content);
+		String bodyObject = " \"body\": {\"storage\": {\"value\":\"" + pageContent + "\",\"representation\":\"storage\"}}";
+		String data = "{\"type\":\"page\", \"title\":\"" + title + "\", \"space\":{\"key\":\"" + space + "\"}," + ancestorObject + bodyObject + "}";
+		post(ConfluenceApiUrl.CREATE, data, null);
+	}
+
+	private String encodePageContent(String content) {
 		String pageContent = content.replaceAll("\'", "\\'");
 		pageContent = pageContent.replaceAll("\n", "");
 		pageContent = pageContent.replaceAll("\t", "");
 		pageContent = pageContent.replaceAll("\r", "");
 		pageContent = pageContent.replaceAll("\"", "\\\"");
 		pageContent = pageContent.replaceAll("\'", "\\\'");
-		System.out.println(">> " + pageContent);
-		String bodyObject = " \"body\": {\"storage\": {\"value\":\"" + pageContent + "\",\"representation\":\"storage\"}}";
-		String data = "{\"type\":\"page\", \"title\":\"" + title + "\", \"space\":{\"key\":\"" + space + "\"}," + ancestorObject + bodyObject + "}";
-		System.out.println(">>" + data);
-		post(ConfluenceApiUrl.CREATE, data, null);
+		return pageContent;
 	}
-
-
 
 }

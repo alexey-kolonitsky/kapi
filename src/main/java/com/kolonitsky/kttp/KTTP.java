@@ -9,6 +9,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 /**
+ * Wrapper around the basic Java request/response communication.
+ *
  * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
 public class KTTP {
@@ -17,18 +19,15 @@ public class KTTP {
 	public static String CONTENT_TYPE_JSON = "application/json";
 	public static String AUTHORIZATION = "YWthbGFuaXRza2k6ZTdHMWpmclFSSQ==";
 
-	public static boolean echo = false;
-
+	/**
+	 * Send PUT-request
+	 *
+	 * @param url
+	 * @param data
+	 * @return
+	 */
 	public static KTTPRequest put(String url, String data) {
-		KTTPRequest request = new KTTPRequest();
-		request.url = url;
-		request.method = "POST";
-		request.headers = new HashMap<>();
-		request.headers.put("User-Agent", USER_AGENT);
-		request.headers.put("Content-Type", CONTENT_TYPE_JSON);
-		request.headers.put("Authorization", "Basic " + AUTHORIZATION);
-		request.headers.put("Accept", CONTENT_TYPE_JSON);
-		request.headers.put("Pragma", "no-cache");
+		KTTPRequest request = createKTTPRequest(url, "PUT", CONTENT_TYPE_JSON, AUTHORIZATION, CONTENT_TYPE_JSON);
 		request.connect();
 
 		if (data != null) {
@@ -40,23 +39,21 @@ public class KTTP {
 			try(DataOutputStream wr = new DataOutputStream(request.connection.getOutputStream())) {
 				wr.write( putData );
 			} catch (Exception ex) {
-//				Konsole.error("POST ERROR");
+				request.addError(ex.getMessage());
 			}
 		}
 		request.handleResponse();
 		return request;
 	}
 
+	/**
+	 * Send POST-request
+	 * @param url
+	 * @param data
+	 * @return
+	 */
 	public static KTTPRequest post(String url, String data) {
-		KTTPRequest request = new KTTPRequest();
-		request.url = url;
-		request.method = "POST";
-		request.headers = new HashMap<>();
-		request.headers.put("User-Agent", USER_AGENT);
-		request.headers.put("Content-Type", CONTENT_TYPE_JSON);
-		request.headers.put("Authorization", "Basic " + AUTHORIZATION);
-		request.headers.put("Accept", CONTENT_TYPE_JSON);
-		request.headers.put("Pragma", "no-cache");
+		KTTPRequest request = createKTTPRequest(url, "POST", CONTENT_TYPE_JSON, AUTHORIZATION, CONTENT_TYPE_JSON);
 		request.connect();
 
 		if (data != null) {
@@ -68,14 +65,18 @@ public class KTTP {
 			try(DataOutputStream wr = new DataOutputStream(request.connection.getOutputStream())) {
 				wr.write( postData );
 			} catch (Exception ex) {
-//				Konsole.error("POST ERROR");
+				request.addError(ex.getMessage());
 			}
 		}
 		request.handleResponse();
 		return request;
 	}
 
-	// HTTP GET request
+	/**
+	 * Send GET request
+	 * @param url
+	 * @return
+	 */
 	public static KTTPRequest get(String url) {
 		KTTPRequest request = new KTTPRequest();
 		request.url = url;
@@ -104,5 +105,27 @@ public class KTTP {
 		return request;
 	}
 
+	/**
+	 * Create KTTPRequest method with a typical headers
+	 *
+	 * @param url
+	 * @param method
+	 * @param contentType
+	 * @param auth
+	 * @param accept
+	 * @return
+	 */
+	private static KTTPRequest createKTTPRequest(String url, String method, String contentType, String auth, String accept) {
+		KTTPRequest request = new KTTPRequest();
+		request.url = url;
+		request.method = method;
+		request.headers = new HashMap<>();
+		request.headers.put("User-Agent", USER_AGENT);
+		request.headers.put("Content-Type", contentType);
+		request.headers.put("Authorization", "Basic " + auth);
+		request.headers.put("Accept", accept);
+		request.headers.put("Pragma", "no-cache");
+		return request;
+	}
 
 }

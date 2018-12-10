@@ -6,4 +6,5 @@ package com.kolonitsky.kttp;
 public class KTTPResponse {
 	public int code;
 	public String data;
+	public String error;
 }

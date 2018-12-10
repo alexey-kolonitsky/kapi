@@ -1,6 +1,6 @@
 package com.kolonitsky.api.stash;
 
-import com.kolonitsky.api.atlassian.AtlassianApi;
+import com.kolonitsky.api.RestApi;
 import com.kolonitsky.api.stash.dto.*;
 import com.kolonitsky.utils.KString;
 
@@ -9,7 +9,7 @@ import java.util.HashMap;
 /**
  * @author Alexey Kolonitsky &lt;alexey.s.kolonitsky@gmail.com&gt;
  */
-public class StashApi extends AtlassianApi {
+public class StashApi extends RestApi {
 
 	public StashApi(String projectId, String repositroyId, String serverHost)  {
 		super(serverHost);
@@ -37,6 +37,15 @@ public class StashApi extends AtlassianApi {
 		return KString.replaceProp(url, "username", username);
 	}
 
+	/**
+	 * Create new pull request
+	 *
+	 * @param title
+	 * @param description
+	 * @param fromBranch
+	 * @param toBranch
+	 * @return
+	 */
 	public StashPullRequest addPullRequest(String title, String description, String fromBranch, String toBranch) {
 		String url = StashApiUrl.ADD_PULL_REQUEST;
 		HashMap<String, Object> o = new HashMap<>();
@@ -50,6 +59,7 @@ public class StashApi extends AtlassianApi {
 			"'fromRef': {'id': '${fromBranch}', 'repository': " + repoObject + "," +
 			"'toRef': {'id': '${toBranch}', 'repository':" + repoObject +
 		"}";
+		//TODO: Replace sigle qotes to double, escape title and description
 		return post(url, requestData, StashPullRequest.class);
 	}
 
