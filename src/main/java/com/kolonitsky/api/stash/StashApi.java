@@ -17,6 +17,11 @@ public class StashApi extends RestApi {
 		addUrlParameter("projectSlug", repositroyId);
 	}
 
+	public String getPullRequestLink(String pullRequestId) {
+		String url = getURL(StashApiUrl.BROWSE_PULL_REQUEST);
+		return KString.replaceProp(url, "pullRequestId", pullRequestId);
+	}
+
 	public String getFileLink(String path) {
 		String url = getURL(StashApiUrl.BROWSE_FILE);
 		return KString.replaceProp(url, "filePath", path);

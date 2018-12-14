@@ -20,4 +20,5 @@ public class StashPullRequest {
 	public StashReviewer[] reviewers;
 	public StashReviewer[] participants;
 	public StashProperties properties;
+	public StashCommit[] commits; // This property is not retrieved but could be enriched
 }
